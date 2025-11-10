@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import GoogleAnalytics from "@/lib/analytics";
+import { GoogleTagManagerHead, GoogleTagManagerBody } from "@/lib/gtm";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,11 +27,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+
   return (
-    <html lang="en">
+    <html lang="ko">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {gtmId && (
+          <>
+            <GoogleTagManagerHead gtmId={gtmId} />
+            <GoogleTagManagerBody gtmId={gtmId} />
+          </>
+        )}
+        {gaId && <GoogleAnalytics gaId={gaId} />}
         {children}
       </body>
     </html>

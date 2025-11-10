@@ -31,7 +31,23 @@ npm install
 
 ```env
 GOOGLE_GENAI_API_KEY=your_api_key_here
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
 ```
+
+**Google Analytics 설정 (선택사항):**
+1. [Google Analytics](https://analytics.google.com/)에서 GA4 속성 생성
+2. 측정 ID (예: `G-XXXXXXXXXX`) 복사
+3. `.env.local`에 `NEXT_PUBLIC_GA_MEASUREMENT_ID` 추가
+4. 측정 ID가 없으면 GA는 자동으로 비활성화됩니다
+
+**Google Tag Manager 설정 (선택사항):**
+1. [Google Tag Manager](https://tagmanager.google.com/)에서 컨테이너 생성
+2. 컨테이너 ID (예: `GTM-XXXXXXX`) 복사
+3. `.env.local`에 `NEXT_PUBLIC_GTM_ID` 추가
+4. 환경 변수가 없으면 GTM은 자동으로 비활성화됩니다
+
+**참고:** GTM ID는 클라이언트에서 실행되므로 공개적으로 노출되어도 안전합니다. 하지만 환경 변수로 관리하는 것이 권장됩니다.
 
 ### 개발 서버 실행
 
