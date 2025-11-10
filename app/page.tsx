@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import html2canvas from 'html2canvas';
 
 interface PeperoResult {
@@ -474,6 +475,15 @@ export default function Home() {
         <button className='bg-white text-brown border-2 border-brown w-full max-w-xs py-3.5 rounded-full text-base font-semibold hover:bg-gray-50 transition' onClick={() => fileInputRef.current?.click()}>
           사진 올리기
         </button>
+        <div className='mt-6 pt-4 border-t border-gray-200 w-full max-w-xs'>
+          <div className='flex flex-wrap justify-center gap-3 text-xs text-gray-500'>
+            <Link href='/terms' className='hover:text-brown transition'>이용약관</Link>
+            <span className='text-gray-300'>|</span>
+            <Link href='/privacy' className='hover:text-brown transition'>개인정보 처리방침</Link>
+            <span className='text-gray-300'>|</span>
+            <Link href='/contact' className='hover:text-brown transition'>고객센터</Link>
+          </div>
+        </div>
         </div>
     ) : isCameraMode ? (
       <div className='flex flex-col items-center justify-center h-screen gap-5 px-4'>
@@ -501,6 +511,15 @@ export default function Home() {
           >
             촬영
           </button>
+        </div>
+        <div className='mt-4 pt-4 border-t border-gray-200 w-full max-w-sm'>
+          <div className='flex flex-wrap justify-center gap-3 text-xs text-gray-500'>
+            <Link href='/terms' className='hover:text-brown transition'>이용약관</Link>
+            <span className='text-gray-300'>|</span>
+            <Link href='/privacy' className='hover:text-brown transition'>개인정보 처리방침</Link>
+            <span className='text-gray-300'>|</span>
+            <Link href='/contact' className='hover:text-brown transition'>고객센터</Link>
+          </div>
         </div>
       </div>
     ) : (
@@ -574,6 +593,17 @@ export default function Home() {
                 <button onClick={handleShare} className='bg-brown text-white flex-1 py-3 text-base font-semibold hover:opacity-90 transition rounded-full'>공유하기</button>
                 <button onClick={handleInstagramShare} className='bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white flex-1 py-3 text-base font-semibold hover:opacity-90 transition rounded-full'>인스타 스토리</button>
                 <button onClick={handleReset} className='bg-gray-100 text-gray-700 flex-1 py-3 text-base font-semibold hover:bg-gray-200 transition rounded-full'>다시하기</button>
+              </div>
+              
+              {/* Footer 링크 */}
+              <div className='pt-4 mt-4 border-t border-gray-100'>
+                <div className='flex flex-wrap justify-center gap-3 text-xs text-gray-500'>
+                  <Link href='/terms' className='hover:text-brown transition'>이용약관</Link>
+                  <span className='text-gray-300'>|</span>
+                  <Link href='/privacy' className='hover:text-brown transition'>개인정보 처리방침</Link>
+                  <span className='text-gray-300'>|</span>
+                  <Link href='/contact' className='hover:text-brown transition'>고객센터</Link>
+                </div>
               </div>
             </div>
           ) : null}
