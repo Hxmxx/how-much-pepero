@@ -1,0 +1,19 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 원 -->
+  <circle cx="16" cy="16" r="15" fill="#8B4513" opacity="0.1"/>
+  
+  <!-- 빼빼로 스틱 1 (왼쪽) -->
+  <rect x="5" y="3" width="5" height="26" rx="2.5" fill="#8B4513"/>
+  <rect x="5" y="3" width="5" height="11" rx="2.5" fill="#D2691E" opacity="0.8"/>
+  <rect x="6.5" y="4" width="2" height="2" rx="1" fill="#FFFFFF" opacity="0.4"/>
+  
+  <!-- 빼빼로 스틱 2 (가운데, 가장 큼) -->
+  <rect x="12.5" y="1" width="5" height="30" rx="2.5" fill="#8B4513"/>
+  <rect x="12.5" y="1" width="5" height="13" rx="2.5" fill="#D2691E" opacity="0.8"/>
+  <rect x="14" y="2" width="2" height="2" rx="1" fill="#FFFFFF" opacity="0.4"/>
+  
+  <!-- 빼빼로 스틱 3 (오른쪽) -->
+  <rect x="20" y="4" width="5" height="24" rx="2.5" fill="#8B4513"/>
+  <rect x="20" y="4" width="5" height="10" rx="2.5" fill="#D2691E" opacity="0.8"/>
+  <rect x="21.5" y="5" width="2" height="2" rx="1" fill="#FFFFFF" opacity="0.4"/>
+</svg>
