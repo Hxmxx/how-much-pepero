@@ -2,6 +2,8 @@
   "name": "how-much-pepero",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "description": "AI-powered Pepero face analysis service - 내 얼굴은 빼빼로 몇 개?",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
