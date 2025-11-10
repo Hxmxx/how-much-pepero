@@ -17,6 +17,7 @@ export default function Home() {
   const [image, setImage] = useState<string | null>(null)
   const [analyzing, setAnalyzing] = useState(false)
   const [result, setResult] = useState<PeperoResult | null>(null)
+  const [predictedCount, setPredictedCount] = useState<number | null>(null)
   const [isCameraMode, setIsCameraMode] = useState(false)
   const [stream, setStream] = useState<MediaStream | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -124,15 +125,38 @@ export default function Home() {
       const parsed = JSON.parse(cleanText);
       
       setResult(parsed as PeperoResult);
+      // 빼빼로 데이 예측 개수 계산 (현실적인 범위)
+      const baseCount = parsed.peperoCount;
+      // 분석 결과를 기반으로 하되, 현실적인 범위(1~100개)로 조정
+      // 높은 빼빼로상일수록 더 많이 받을 가능성
+      let predicted: number;
+      if (baseCount > 500) {
+        // 높은 빼빼로상: 30~80개
+        predicted = Math.floor(30 + Math.random() * 50);
+      } else if (baseCount > 300) {
+        // 중상 빼빼로상: 20~60개
+        predicted = Math.floor(20 + Math.random() * 40);
+      } else if (baseCount > 150) {
+        // 중 빼빼로상: 10~40개
+        predicted = Math.floor(10 + Math.random() * 30);
+      } else {
+        // 낮은 빼빼로상: 5~25개
+        predicted = Math.floor(5 + Math.random() * 20);
+      }
+      setPredictedCount(predicted);
     } catch (error) {
       console.error("Analysis error:", error);
+      const fallbackCount = Math.floor(Math.random() * 900) + 100;
       setResult({
-        peperoCount: Math.floor(Math.random() * 900) + 100,
+        peperoCount: fallbackCount,
         peperoType: "초코",
         personality: "AI가 당황한 신비로운 얼굴형",
         fortune: "오늘은 빼빼로를 뒤집어서 먹으면 행운",
         tip: "분석 실패도 운명이니 다시 시도해보세요"
       } as PeperoResult);
+      // 에러 처리 시에도 현실적인 범위로 예측
+      const predicted = Math.floor(10 + Math.random() * 40);
+      setPredictedCount(predicted);
     } finally {
       setAnalyzing(false);
     }
@@ -141,6 +165,7 @@ export default function Home() {
   const handleReset = () => {
     setImage(null);
     setResult(null);
+    setPredictedCount(null);
     stopCamera();
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -148,7 +173,7 @@ export default function Home() {
   };
 
   const generateShareImage = async (): Promise<File | null> => {
-    if (!shareContainerRef.current || !result || !image) return null;
+    if (!shareContainerRef.current || !result || !image || predictedCount === null) return null;
 
     try {
       // 공유용 컨테이너 생성
@@ -326,6 +351,89 @@ export default function Home() {
       tipDiv.appendChild(tipHeader);
       tipDiv.appendChild(tipText);
       resultContainer.appendChild(tipDiv);
+
+      // 빼빼로 데이 예측
+      const predictionDiv = document.createElement('div');
+      predictionDiv.style.backgroundColor = '#fdf2f8';
+      predictionDiv.style.borderRadius = '8px';
+      predictionDiv.style.padding = '16px';
+      predictionDiv.style.display = 'flex';
+      predictionDiv.style.flexDirection = 'column';
+      predictionDiv.style.gap = '4px';
+      
+      const predictionHeader = document.createElement('div');
+      predictionHeader.style.display = 'flex';
+      predictionHeader.style.alignItems = 'center';
+      predictionHeader.style.gap = '8px';
+      predictionHeader.style.marginBottom = '6px';
+      
+      const predictionIcon = document.createElement('span');
+      predictionIcon.textContent = '🎁';
+      predictionIcon.style.fontSize = '18px';
+      
+      const predictionLabel = document.createElement('h3');
+      predictionLabel.textContent = '빼빼로 데이 예측';
+      predictionLabel.style.fontSize = '12px';
+      predictionLabel.style.fontWeight = '500';
+      predictionLabel.style.color = '#6b7280';
+      predictionLabel.style.margin = '0';
+      predictionLabel.style.textTransform = 'uppercase';
+      predictionLabel.style.letterSpacing = '0.05em';
+      
+      predictionHeader.appendChild(predictionIcon);
+      predictionHeader.appendChild(predictionLabel);
+      
+      const predictionText = document.createElement('p');
+      predictionText.textContent = '올해 빼빼로 데이에 받을 빼빼로는...';
+      predictionText.style.fontSize = '14px';
+      predictionText.style.color = '#1f2937';
+      predictionText.style.lineHeight = '1.6';
+      predictionText.style.margin = '0 0 8px 0';
+      predictionText.style.paddingLeft = '24px';
+      
+      const predictionCountDiv = document.createElement('div');
+      predictionCountDiv.style.display = 'flex';
+      predictionCountDiv.style.alignItems = 'baseline';
+      predictionCountDiv.style.gap = '6px';
+      predictionCountDiv.style.marginBottom = '4px';
+      predictionCountDiv.style.paddingLeft = '24px';
+      
+      const predictionCountText = document.createElement('span');
+      predictionCountText.textContent = predictedCount.toString();
+      predictionCountText.style.fontSize = '24px';
+      predictionCountText.style.fontWeight = 'bold';
+      predictionCountText.style.color = '#db2777';
+      
+      const predictionUnitText = document.createElement('span');
+      predictionUnitText.textContent = '개';
+      predictionUnitText.style.fontSize = '14px';
+      predictionUnitText.style.color = '#6b7280';
+      
+      predictionCountDiv.appendChild(predictionCountText);
+      predictionCountDiv.appendChild(predictionUnitText);
+      
+      const predictionMessage = document.createElement('p');
+      const message = predictedCount > 60 
+        ? '와! 엄청 많이 받을 거예요! 🎉'
+        : predictedCount > 40
+        ? '꽤 많이 받을 예정이에요! 😊'
+        : predictedCount > 20
+        ? '적당히 받을 거예요! 🍫'
+        : predictedCount > 10
+        ? '조금 받을 수도 있어요. 그래도 의미 있어요! 💝'
+        : '한두 개라도 받으면 행복해요! 🍀';
+      predictionMessage.textContent = message;
+      predictionMessage.style.fontSize = '12px';
+      predictionMessage.style.color = '#6b7280';
+      predictionMessage.style.fontStyle = 'italic';
+      predictionMessage.style.margin = '0';
+      predictionMessage.style.paddingLeft = '24px';
+      
+      predictionDiv.appendChild(predictionHeader);
+      predictionDiv.appendChild(predictionText);
+      predictionDiv.appendChild(predictionCountDiv);
+      predictionDiv.appendChild(predictionMessage);
+      resultContainer.appendChild(predictionDiv);
 
       shareContainer.appendChild(resultContainer);
       document.body.appendChild(shareContainer);
@@ -586,6 +694,38 @@ export default function Home() {
                   {result.tip}
                 </p>
               </div>
+
+              {/* 빼빼로 데이 예측 */}
+              {predictedCount !== null && (
+                <div className='bg-brown-50 rounded-lg p-4 space-y-1'>
+                  <div className='flex items-center gap-2 mb-1.5'>
+                    <span className='text-lg'>🎁</span>
+                    <h3 className='text-xs font-medium text-gray-600'>빼빼로 데이 예측</h3>
+                  </div>
+                  <div className='pl-6'>
+                    <p className='text-sm text-gray-800 leading-relaxed mb-2'>
+                      올해 빼빼로 데이에 받을 빼빼로는
+                    </p>
+                    <div className='flex items-baseline gap-1.5 mb-2'>
+                      <span className='text-2xl font-bold text-brown'>
+                        {predictedCount}
+                      </span>
+                      <span className='text-sm text-gray-600'>개</span>
+                    </div>
+                    <p className='text-xs text-gray-600 italic'>
+                      {predictedCount > 60 
+                        ? '와! 엄청 많이 받을 거예요! 🎉'
+                        : predictedCount > 40
+                        ? '꽤 많이 받을 예정이에요! 😊'
+                        : predictedCount > 20
+                        ? '적당히 받을 거예요! 🍫'
+                        : predictedCount > 10
+                        ? '조금 받을 수도 있어요. 그래도 의미 있어요! 💝'
+                        : '한두 개라도 받으면 행복해요! 🍀'}
+                    </p>
+                  </div>
+                </div>
+              )}
               </div>
 
               {/* 버튼들 */}

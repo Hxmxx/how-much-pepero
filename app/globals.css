@@ -20,3 +20,11 @@ body {
 .bg-brown {
   background-color: #8B4513;
 }
+
+.text-brown-50 {
+  color: #F5E6E0;
+}
+
+.bg-brown-50 {
+  background-color: #F5E6E0;
+}
